@@ -118,6 +118,10 @@ def render(context: ViewContext) -> None:
 
     st.subheader("¿Dónde están?")
     st.plotly_chart(charts.segment_map(analysis.clean, labels), width="stretch")
+    st.caption(
+        "Los puntos forman la silueta del país. El punto aislado arriba a la izquierda es "
+        "Providencia, en el archipiélago de San Andrés."
+    )
 
     st.subheader("Contraste con los grupos del DNP")
     crosstab = clustering.cross_tabulate(labels, analysis.clean[config.PEER_GROUP])

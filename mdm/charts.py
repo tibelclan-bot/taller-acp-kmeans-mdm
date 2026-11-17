@@ -14,6 +14,7 @@ ACCENT = "#C8553D"
 MUTED = "#9AA5B1"
 DIVERGING_SCALE = "RdBu"
 HIGHLIGHT_SYMBOL = "star"
+MAP_HEIGHT = 700
 LOADING_VECTOR_REACH = 0.9  # fracción del rango de puntajes que ocupan las flechas
 
 
@@ -239,23 +240,35 @@ def segment_profile_heatmap(standardized_profile: pd.DataFrame) -> go.Figure:
 
 
 def segment_map(frame: pd.DataFrame, labels: pd.Series) -> go.Figure:
-    """Ubicación geográfica de los municipios, coloreados por segmento."""
+    """Ubicación geográfica de los municipios, coloreados por segmento.
+
+    Se dibuja como dispersión longitud-latitud con ejes a la misma escala: no
+    depende de mapas base externos, así que funciona sin conexión a terceros.
+    """
     segments = sorted(labels.unique())
-    figure = px.scatter_map(
+    figure = px.scatter(
         frame.assign(**{config.CLUSTER: labels}),
-        lat=config.LATITUDE,
-        lon=config.LONGITUDE,
+        x=config.LONGITUDE,
+        y=config.LATITUDE,
         color=config.CLUSTER,
         hover_name=config.MUNICIPALITY,
         hover_data={config.DEPARTMENT: True, config.LATITUDE: False, config.LONGITUDE: False},
         category_orders={config.CLUSTER: segments},
         color_discrete_map=_segment_color(segments),
-        zoom=4.2,
-        height=620,
-        map_style="carto-positron",
-        title="Distribución geográfica de los segmentos",
+        opacity=0.8,
+        height=MAP_HEIGHT,
+        title="Distribución geográfica de los segmentos (cada punto es un municipio)",
     )
-    figure.update_layout(legend_title="Segmento")
+    figure.update_xaxes(title="Longitud", showgrid=False, zeroline=False, constrain="domain")
+    figure.update_yaxes(
+        title="Latitud",
+        showgrid=False,
+        zeroline=False,
+        constrain="domain",
+        scaleanchor="x",
+        scaleratio=1,
+    )
+    figure.update_layout(legend_title="Segmento", plot_bgcolor="white")
     return figure
 
 

@@ -52,9 +52,10 @@ segmentos).
 - Los insumos son en buena parte registros administrativos reportados por las entidades.
 - El CSV se construyó con `scripts/build_dataset.py` a partir de una copia pública de la base del
   DNP (panel [miltonrojasb/MDM](https://github.com/miltonrojasb/MDM)), no del archivo descargado
-  directamente del portal del DNP. Las cifras son internamente consistentes (los componentes de
-  Gestión y Resultados coinciden con el promedio de sus dimensiones), pero conviene contrastarlas
-  con la publicación oficial antes de usarlas para decisiones reales.
+  directamente del portal del DNP. Como control, se contrastaron valores puntuales con
+  publicaciones del DNP y coinciden (por ejemplo, Cali 86,45 y Bogotá 84,08 en 2020; promedio
+  nacional de 52,8 en 2022). La vigencia 2024 no se pudo contrastar de la misma forma, así que
+  conviene revisarla contra el visor oficial antes de usar las cifras para decisiones reales.
 - Es información pública y agregada por municipio; no contiene datos personales.
 
 ## Por qué ACP y K-Means

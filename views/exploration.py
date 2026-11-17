@@ -2,10 +2,25 @@
 
 from __future__ import annotations
 
+import pandas as pd
 import streamlit as st
 
 from mdm import charts, config
 from views.context import ViewContext
+
+
+def _dispersion_reading(deviations: pd.Series) -> str:
+    """Explica por qué hay que estandarizar, con la dispersión del año elegido."""
+    widest, narrowest = deviations.idxmax(), deviations.idxmin()
+    variance_ratio = (deviations[widest] / deviations[narrowest]) ** 2
+    return (
+        "**Cómo leerlo.** Todas las dimensiones comparten la escala 0–100, pero su dispersión es "
+        f"muy distinta: la más dispersa es **{charts.label(widest)}** (desviación estándar "
+        f"{deviations[widest]:.1f}) y la menos dispersa es **{charts.label(narrowest)}** "
+        f"({deviations[narrowest]:.1f}). Sin estandarizar, la primera aportaría "
+        f"{variance_ratio:.1f} veces más varianza que la segunda y dominaría tanto el ACP como "
+        "las distancias de K-Means."
+    )
 
 
 def render(context: ViewContext) -> None:
@@ -31,15 +46,7 @@ def render(context: ViewContext) -> None:
     description = raw[variables].describe().T.rename(index=charts.label)
     st.dataframe(description.style.format("{:.2f}"), width="stretch")
     st.plotly_chart(charts.distribution_boxes(raw, variables), width="stretch")
-    st.markdown(
-        """
-        **Cómo leerlo.** Aunque todas las dimensiones comparten la escala 0–100, su dispersión es
-        muy distinta: Salud y Seguridad se concentran en puntajes altos con poca variación,
-        mientras que Movilización de recursos es baja en la mayoría de municipios y tiene una cola
-        larga de valores altos. Sin estandarizar, las dimensiones más dispersas dominarían tanto
-        el ACP como las distancias de K-Means.
-        """
-    )
+    st.markdown(_dispersion_reading(raw[variables].std()))
 
     st.subheader("Relaciones entre dimensiones")
     st.plotly_chart(charts.correlation_heatmap(raw, variables), width="stretch")
