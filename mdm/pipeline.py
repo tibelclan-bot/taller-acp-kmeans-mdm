@@ -3,15 +3,18 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import StrEnum
+from enum import Enum
 
 import pandas as pd
 
 from mdm import clustering, config, data, pca, preprocessing
 
 
-class ComponentRule(StrEnum):
-    """Criterios para decidir cuántos componentes conservar."""
+class ComponentRule(str, Enum):
+    """Criterios para decidir cuántos componentes conservar.
+
+    Hereda de ``str`` para funcionar también en Python 3.10 (sin ``StrEnum``).
+    """
 
     KAISER = "Autovalor mayor que 1 (Kaiser)"
     CUMULATIVE_VARIANCE = "Varianza acumulada mínima"

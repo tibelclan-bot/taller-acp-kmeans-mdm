@@ -142,7 +142,7 @@ se genera a partir de la corrida actual; no hay resultados fijos ni capturas.
 
 ## Cómo ejecutar
 
-Requiere Python 3.11 o superior.
+Requiere Python 3.10 o superior.
 
 ```bash
 git clone https://github.com/tibelclan-bot/taller-acp-kmeans-mdm.git

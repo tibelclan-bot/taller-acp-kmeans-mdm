@@ -45,7 +45,11 @@ def _select_variables() -> tuple[str, ...]:
 
 
 def _select_component_settings(n_variables: int) -> dict:
-    rule = st.radio("Criterio para conservar componentes", list(ComponentRule))
+    rule = st.radio(
+        "Criterio para conservar componentes",
+        list(ComponentRule),
+        format_func=lambda option: option.value,
+    )
     if rule is ComponentRule.CUMULATIVE_VARIANCE:
         threshold = st.slider(
             "Varianza acumulada mínima", 0.50, 0.95, config.DEFAULT_VARIANCE_THRESHOLD, 0.05
