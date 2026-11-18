@@ -5,7 +5,7 @@
 **Taller individual:** aprendizaje no supervisado (ACP y K-Means) con Python, Streamlit y GitHub
 
 - Aplicación desplegada: https://perfiles-municipales-zutta.streamlit.app
-- Video de sustentación: `PEGAR_AQUÍ_EL_ENLACE_DEL_VIDEO`
+
 
 ## Contexto y pregunta
 
